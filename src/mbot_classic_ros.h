@@ -31,6 +31,12 @@ typedef struct {
     float odom_x;
     float odom_y;
     float odom_theta;
+
+     // Gyrodometry by GPT
+    float gyrodom_x;
+    float gyrodom_y;
+    float gyrodom_theta;
+    
     // Body velocity
     float vx;
     float vy;

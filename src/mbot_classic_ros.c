@@ -203,6 +203,7 @@ static void mbot_publish_state(void) {
     // Encoders & Odometry & TF - every 4th tick (25 Hz at 100 Hz timer)
     if (tick % 4 == 0) {
         ret = rcl_publish(&odom_publisher, &odom_msg, NULL);
+        ret = rcl_publish(&gyrodom_publisher, &gyrodom_msg, NULL);
     }
 
     // Battery - every 25th tick (4 Hz at 100 Hz timer)
@@ -235,16 +236,16 @@ static bool mbot_loop(repeating_timer_t *rt) {
             &mbot_state.odom_y,
             &mbot_state.odom_theta
         );
-        // mbot_calculate_gyrodometry(
-        //     mbot_state.vx,
-        //     mbot_state.vy,
-        //     mbot_state.wz,
-        //     MAIN_LOOP_PERIOD,
-        //     mbot_state.imu_gyro[2],
-        //     &mbot_state.odom_x,
-        //     &mbot_state.odom_y,
-        //     &mbot_state.odom_theta
-        // );
+        mbot_calculate_gyrodometry(
+            mbot_state.vx,
+            mbot_state.vy,
+            mbot_state.wz,
+            MAIN_LOOP_PERIOD,
+            mbot_state.imu_gyro[2],
+            &mbot_state.gyrodom_x,
+            &mbot_state.gyrodom_y,
+            &mbot_state.gyrodom_theta
+        );
         /* Populate odometry and TF ROS messages with the exact timestamp of this calculation */
         int64_t stamp_ns = rmw_uros_epoch_nanos();
 
@@ -265,6 +266,29 @@ static bool mbot_loop(repeating_timer_t *rt) {
         odom_msg.twist.twist.linear.x  = mbot_state.vx;
         odom_msg.twist.twist.linear.y  = mbot_state.vy;
         odom_msg.twist.twist.angular.z = mbot_state.wz;
+
+        //by gpt
+        // Gyrodometry ROS message
+        gyrodom_msg.header.stamp = odom_msg.header.stamp;
+
+        // Position
+        gyrodom_msg.pose.pose.position.x = mbot_state.gyrodom_x;
+        gyrodom_msg.pose.pose.position.y = mbot_state.gyrodom_y;
+        gyrodom_msg.pose.pose.position.z = 0.0f;
+
+        // Orientation quaternion
+        float gcy = cosf(mbot_state.gyrodom_theta * 0.5f);
+        float gsy = sinf(mbot_state.gyrodom_theta * 0.5f);
+
+        gyrodom_msg.pose.pose.orientation.w = gcy;
+        gyrodom_msg.pose.pose.orientation.x = 0.0f;
+        gyrodom_msg.pose.pose.orientation.y = 0.0f;
+        gyrodom_msg.pose.pose.orientation.z = gsy;
+
+        // Velocity
+        gyrodom_msg.twist.twist.linear.x = mbot_state.vx;
+        gyrodom_msg.twist.twist.linear.y = mbot_state.vy;
+        gyrodom_msg.twist.twist.angular.z = mbot_state.imu_gyro[2];
 
         /* TF message (odom -> base_footprint) */
         tf_msg.transforms.data[0].header.stamp.sec     = odom_msg.header.stamp.sec;

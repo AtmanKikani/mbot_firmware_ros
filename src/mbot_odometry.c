@@ -17,5 +17,21 @@ void mbot_calculate_odometry(float vx, float vy, float wz, float dt, float* x, f
 }
 
 void mbot_calculate_gyrodometry(float vx, float vy, float wz, float dt, float gyro_z, float* x, float* y, float* theta) {
+    // Use the IMU instead of the wheel-derived angular velocity
+    (void)wz;
+
+    // Estimate heading halfway through the time interval
+    float theta_mid = *theta + 0.5f * gyro_z * dt;
+
+    // Integrate forward velocity in the world frame
+    *x += (vx * cosf(theta_mid) - vy * sinf(theta_mid)) * dt;
+    *y += (vx * sinf(theta_mid) + vy * cosf(theta_mid)) * dt;
+
+    // Integrate gyroscope angular velocity
+    *theta += gyro_z * dt;
+
+    // Normalize heading to [-pi, pi]
+    while (*theta > PI)  *theta -= 2.0f * PI;
+    while (*theta <= -PI) *theta += 2.0f * PI;
     return;
 }
