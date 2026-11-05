@@ -235,16 +235,16 @@ static bool mbot_loop(repeating_timer_t *rt) {
             &mbot_state.odom_y,
             &mbot_state.odom_theta
         );
-        // mbot_calculate_gyrodometry(
-        //     mbot_state.vx,
-        //     mbot_state.vy,
-        //     mbot_state.wz,
-        //     MAIN_LOOP_PERIOD,
-        //     mbot_state.imu_gyro[2],
-        //     &mbot_state.odom_x,
-        //     &mbot_state.odom_y,
-        //     &mbot_state.odom_theta
-        // );
+        mbot_calculate_gyrodometry(
+             mbot_state.vx, 
+             mbot_state.vy,
+             mbot_state.wz,
+             MAIN_LOOP_PERIOD,
+             mbot_state.imu_gyro[2],
+             &mbot_state.gyrodom_x,
+             &mbot_state.gyrodom_y,
+             &mbot_state.gyrodom_theta
+         );
         /* Populate odometry and TF ROS messages with the exact timestamp of this calculation */
         int64_t stamp_ns = rmw_uros_epoch_nanos();
 
