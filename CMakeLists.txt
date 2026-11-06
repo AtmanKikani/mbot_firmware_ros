@@ -38,6 +38,8 @@ set(COMMON_LIBS
 #=============================================================================
 # Main MBot Classic ROS Executable
 #=============================================================================
+option(MBOT_DEBUG_PID "Publish left wheel PID output in /motor_vel velocity[2]" OFF)
+
 add_executable(mbot_classic_ros
     src/mbot_classic_ros.c
     src/mbot_classic_ros.h
@@ -73,6 +75,7 @@ target_compile_definitions(mbot_classic_ros PRIVATE
     # PICO_STDIO_ENABLE_CRLF_SUPPORT=0
     # PICO_STDIO_DEFAULT_CRLF=0
     CFG_TUD_CDC=2
+    $<$<BOOL:${MBOT_DEBUG_PID}>:MBOT_DEBUG_PID=1>
 )
 
 #=============================================================================

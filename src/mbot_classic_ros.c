@@ -191,7 +191,11 @@ static void mbot_publish_state(void) {
     get_mbot_state_safe(&local_state);
     motor_vel_msg.velocity[MOT_L] = local_state.wheel_vel[MOT_L];
     motor_vel_msg.velocity[MOT_R] = local_state.wheel_vel[MOT_R];
+#ifdef MBOT_DEBUG_PID
+    motor_vel_msg.velocity[MOT_UNUSED] = local_state.debug_pid_left;
+#else
     motor_vel_msg.velocity[MOT_UNUSED] = 0.0f;
+#endif
     ret = rcl_publish(&motor_vel_publisher, &motor_vel_msg, NULL);
 
     // Encoders & TF - every 2nd tick (50 Hz at 100 Hz timer)
@@ -290,6 +294,9 @@ static bool mbot_loop(repeating_timer_t *rt) {
     bool cmd_fresh = (time_us_64() - local_cmd.timestamp_us) < MBOT_TIMEOUT_US;
     float pwm_left = 0.0f, pwm_right = 0.0f;
     float pid_pwm_left = 0.0f, pid_pwm_right = 0.0f;
+#ifdef MBOT_DEBUG_PID
+    float debug_pid_left = 0.0f;   // stays 0 whenever the PID is not run
+#endif
     if (cmd_fresh) {
         switch (local_cmd.drive_mode) {
             case MODE_MOTOR_PWM:{
@@ -311,6 +318,9 @@ static bool mbot_loop(repeating_timer_t *rt) {
                     local_state.wheel_vel[MOT_L], local_state.wheel_vel[MOT_R],
                     &left_correction, &right_correction
                 );
+#ifdef MBOT_DEBUG_PID
+                debug_pid_left = left_correction;
+#endif
                 pid_pwm_left = left_correction * params.motor_polarity[MOT_L];
                 pid_pwm_right = right_correction * params.motor_polarity[MOT_R];
                 switch (control_mode) {
@@ -348,6 +358,9 @@ static bool mbot_loop(repeating_timer_t *rt) {
                 );
                 
                 // Apply motor polarity to PID corrections
+#ifdef MBOT_DEBUG_PID
+                debug_pid_left = left_correction;
+#endif
                 pid_pwm_left = params.motor_polarity[MOT_L] * left_correction;
                 pid_pwm_right = params.motor_polarity[MOT_R] * right_correction;
 
@@ -389,6 +402,9 @@ static bool mbot_loop(repeating_timer_t *rt) {
         ENTER_CRITICAL();
         mbot_state.motor_pwm[MOT_L] = pwm_left;
         mbot_state.motor_pwm[MOT_R] = pwm_right;
+#ifdef MBOT_DEBUG_PID
+        mbot_state.debug_pid_left = debug_pid_left;
+#endif
         EXIT_CRITICAL();
     }
 

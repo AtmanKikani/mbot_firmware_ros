@@ -52,6 +52,9 @@ typedef struct {
     // Encoder data
     int64_t last_encoder_time;
     int64_t encoder_delta_t;
+#ifdef MBOT_DEBUG_PID
+    float debug_pid_left;   // raw left PID output, wheel frame; runtime only, never saved to FRAM
+#endif
 } mbot_state_t;
 
 // Command structure
