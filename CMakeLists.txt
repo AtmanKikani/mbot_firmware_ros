@@ -51,6 +51,8 @@ add_executable(mbot_classic_ros
     src/mbot_ros_comms.h
     src/mbot_controller.c
     src/mbot_controller.h
+    src/wheel_pid.c
+    src/wheel_pid.h
 )
 
 target_link_libraries(mbot_classic_ros
