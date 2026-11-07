@@ -28,6 +28,9 @@ int init_parameter_server(rclc_parameter_server_t* parameter_server, rcl_node_t*
 bool parameter_callback(const Parameter * old_param, const Parameter * new_param, void * context);
 
 int mbot_controller_init(void);
+// Clear the wheel PID state (integrator, derivative, previous error)
+void mbot_controller_reset(void);
+
 void mbot_motor_vel_controller(float target_left_vel, float target_right_vel, 
                               float current_left_vel, float current_right_vel,
                               float* left_correction, float* right_correction);

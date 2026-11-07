@@ -60,6 +60,11 @@ int mbot_controller_init(void) {
     return MBOT_OK;
 }
 
+void mbot_controller_reset(void) {
+    wheel_pid_reset(&left_wheel_pid);
+    wheel_pid_reset(&right_wheel_pid);
+}
+
 void mbot_motor_vel_controller(float target_left_vel, float target_right_vel, 
                               float current_left_vel, float current_right_vel,
                               float* left_correction, float* right_correction) {

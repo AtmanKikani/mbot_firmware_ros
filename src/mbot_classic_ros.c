@@ -297,6 +297,18 @@ static bool mbot_loop(repeating_timer_t *rt) {
 #ifdef MBOT_DEBUG_PID
     float debug_pid_left = 0.0f;   // stays 0 whenever the PID is not run
 #endif
+
+    // Start every velocity-control session from a clean PID: clear it while the command is stale
+    // and whenever a velocity mode is entered from another mode.
+    static bool was_fresh = false;
+    static int last_drive_mode = -1;
+    bool in_vel_mode = (local_cmd.drive_mode == MODE_MOTOR_VEL) || (local_cmd.drive_mode == MODE_MBOT_VEL);
+    if (!cmd_fresh || (in_vel_mode && (!was_fresh || local_cmd.drive_mode != last_drive_mode))) {
+        mbot_controller_reset();
+    }
+    was_fresh = cmd_fresh;
+    last_drive_mode = local_cmd.drive_mode;
+
     if (cmd_fresh) {
         switch (local_cmd.drive_mode) {
             case MODE_MOTOR_PWM:{
