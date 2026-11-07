@@ -18,8 +18,6 @@ extern mbot_params_t params;
 mbot_pid_config_t pid_gains = MBOT_DEFAULT_PID_GAINS;
 control_mode_t control_mode = (control_mode_t)MBOT_DEFAULT_CONTROL_MODE;
 
-static bool pid_updated = false;
-
 void mbot_read_pid_gains(const mbot_params_t* params) {
     pid_gains.left_wheel.kp  = params->left_wheel_vel_pid[0];
     pid_gains.left_wheel.ki  = params->left_wheel_vel_pid[1];
@@ -151,67 +149,68 @@ bool parameter_callback(const Parameter * old_param, const Parameter * new_param
     }
 
     const char* param_name = new_param->name.data;
+    bool accepted = false;  // true only when a known parameter with the right type is applied
 
     if (strcmp(param_name, "left_wheel.kp") == 0) {
         if (new_param->value.type == RCLC_PARAMETER_DOUBLE) {
             pid_gains.left_wheel.kp = new_param->value.double_value;
             apply_gains(&left_wheel_pid, &pid_gains.left_wheel);
-            pid_updated = true;
+            accepted = true;
         }
     } else if (strcmp(param_name, "left_wheel.ki") == 0) {
         if (new_param->value.type == RCLC_PARAMETER_DOUBLE) {
             pid_gains.left_wheel.ki = new_param->value.double_value;
             apply_gains(&left_wheel_pid, &pid_gains.left_wheel);
-            pid_updated = true;
+            accepted = true;
         }
     } else if (strcmp(param_name, "left_wheel.kd") == 0) {
         if (new_param->value.type == RCLC_PARAMETER_DOUBLE) {
             pid_gains.left_wheel.kd = new_param->value.double_value;
             apply_gains(&left_wheel_pid, &pid_gains.left_wheel);
-            pid_updated = true;
+            accepted = true;
         }
     } else if (strcmp(param_name, "left_wheel.tf") == 0) {
         if (new_param->value.type == RCLC_PARAMETER_DOUBLE) {
             pid_gains.left_wheel.tf = new_param->value.double_value;
             apply_gains(&left_wheel_pid, &pid_gains.left_wheel);
-            pid_updated = true;
+            accepted = true;
         }
     } else if (strcmp(param_name, "right_wheel.kp") == 0) {
         if (new_param->value.type == RCLC_PARAMETER_DOUBLE) {
             pid_gains.right_wheel.kp = new_param->value.double_value;
             apply_gains(&right_wheel_pid, &pid_gains.right_wheel);
-            pid_updated = true;
+            accepted = true;
         }
     } else if (strcmp(param_name, "right_wheel.ki") == 0) {
         if (new_param->value.type == RCLC_PARAMETER_DOUBLE) {
             pid_gains.right_wheel.ki = new_param->value.double_value;
             apply_gains(&right_wheel_pid, &pid_gains.right_wheel);
-            pid_updated = true;
+            accepted = true;
         }
     } else if (strcmp(param_name, "right_wheel.kd") == 0) {
         if (new_param->value.type == RCLC_PARAMETER_DOUBLE) {
             pid_gains.right_wheel.kd = new_param->value.double_value;
             apply_gains(&right_wheel_pid, &pid_gains.right_wheel);
-            pid_updated = true;
+            accepted = true;
         }
     } else if (strcmp(param_name, "right_wheel.tf") == 0) {
         if (new_param->value.type == RCLC_PARAMETER_DOUBLE) {
             pid_gains.right_wheel.tf = new_param->value.double_value;
             apply_gains(&right_wheel_pid, &pid_gains.right_wheel);
-            pid_updated = true;
+            accepted = true;
         }
     } else if (strcmp(param_name, "control_mode") == 0) {
         if (new_param->value.type == RCLC_PARAMETER_INT) {
             int val = new_param->value.integer_value;
             control_mode = (control_mode_t)val;
-            pid_updated = true;
+            accepted = true;
         }
     }
 
-    if (pid_updated) {
+    if (accepted) {
         mbot_save_params_to_fram();
     }
-    return pid_updated;
+    return accepted;
 }
 
 // Save current PID gains and control mode to FRAM
