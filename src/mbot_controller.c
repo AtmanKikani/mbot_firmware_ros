@@ -5,6 +5,7 @@
 #include "config/mbot_classic_config.h"
 #include "config/mbot_classic_default_pid.h"
 #include "wheel_pid.h"
+#include "mbot_classic_ros.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
@@ -37,9 +38,12 @@ void mbot_read_pid_gains(const mbot_params_t* params) {
 static wheel_pid_t left_wheel_pid;
 static wheel_pid_t right_wheel_pid;
 
+// The control loop timer interrupt runs the PIDs, so update them with interrupts off.
 static void apply_gains(wheel_pid_t* pid, const pid_params_t* gains) {
+    ENTER_CRITICAL();
     wheel_pid_set_gains(pid, gains->kp, gains->ki, gains->kd, gains->tf);
     wheel_pid_reset(pid);
+    EXIT_CRITICAL();
 }
 
 int mbot_controller_init(void) {
