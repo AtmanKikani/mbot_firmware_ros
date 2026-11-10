@@ -5,7 +5,7 @@
 #define PI 3.14159265358979323846f
 #endif
 //Threshold for switching to the gyro, in rad/s (starting guess, tune on the robot)
-#define GYRO_THRESHOLD 0.2f 
+#define GYRO_THRESHOLD 0.1f 
 
 void mbot_calculate_odometry(float vx, float vy, float wz, float dt, float* x, float* y, float* theta) {
     // Update pose

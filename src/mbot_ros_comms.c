@@ -120,6 +120,13 @@ int mbot_ros_comms_init_publishers(rcl_node_t *node) {
         "odom");
     if (ret != RCL_RET_OK) { printf("[FATAL] Failed to init odom_publisher: %d\n", ret); fflush(stdout); return MBOT_ERROR; }
 
+    ret = rclc_publisher_init_default(
+        &gyrodom_publisher,
+        node,
+        ROSIDL_GET_MSG_TYPE_SUPPORT(nav_msgs, msg, Odometry),
+        "gyrodom");
+    if (ret != RCL_RET_OK) { printf("[FATAL] Failed to init gyrodom_publisher: %d\n", ret); fflush(stdout); return MBOT_ERROR; }
+
     ret = rclc_publisher_init_best_effort(
         &motor_vel_publisher,
         node,
@@ -216,6 +223,10 @@ void reset_odometry_callback(const void * req, void * res) {
     mbot_state.odom_x = 0.0f;
     mbot_state.odom_y = 0.0f;
     mbot_state.odom_theta = 0.0f;
+    mbot_state.gyrodom_x = 0.0f;
+    mbot_state.gyrodom_y = 0.0f;
+    mbot_state.gyrodom_theta = 0.0f;
+
     EXIT_CRITICAL();
 
     // Set response
