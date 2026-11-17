@@ -1,0 +1,15 @@
+step                             GT      odom   gyrodom  odom err  gyro err
+step +15                      16.00     15.73     15.01     -0.27     -0.99
+step +30                      32.00     31.15     30.04     -0.85     -1.96
+step +45                      46.00     46.57     44.95      0.57     -1.05
+step +0                        2.00     -0.55      0.01     -2.55     -1.99
+step -15                     -16.00    -16.01    -15.19     -0.01      0.81
+step -30                     -30.00    -31.03    -29.95     -1.03      0.05
+step -45                     -46.00    -46.56    -45.11     -0.56      0.89
+step +0                        1.00      1.23     -0.06      0.23     -1.06
+spin +3 turns (CCW)         1165.00   1110.70   1079.87    -54.30    -85.13
+spin back -3 turns (CW)        0.00     -0.04     -0.29     -0.04     -0.29
+
+RMS (steps)  odom 1.06  gyrodom 1.25 deg
+RMS (spins)  odom 38.39  gyrodom 60.20 deg
+RMS (all)    odom 17.20  gyrodom 26.94 deg

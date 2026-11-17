@@ -1,0 +1,111 @@
+Testing Encoder Polarity...
+E0: 0 , E1: 0
+E0: -94 , E1: -101
+E0: -148 , E1: -142
+E0: -159 , E1: -141
+E0: -158 , E1: -144
+
+ENC0 POL: -1 , ENC1 POL: -1
+ 
+Initializing the Bosch IMU...
+Success!
+CTL Mode=1
+ROM Version=2dad
+RAM Version=0
+Product ID=83
+Revision ID=3
+Host CRC: 84604394
+Setting Matrix Config...
+Installing Sensors...
+
+Testing Motor Polarity...
+Gyro: 52.335243
+Gyro: -2.024597
+Gyro: 1.091130
+Gyro: -64.518517
+rotidx = 0
+Motor Polarity: (-1, -1)  Left ID: 0, Right ID: 1
+
+Testing polarity calibration result: 
+Driving Forward...
+Encoder Readings: R: -672, L: 759, 
+Driving Backward...
+Encoder Readings: R: 690, L: -739, 
+Turning Positive (CCW)...
+Encoder Readings: R: -677, L: -685, 
+Turning Negative (CW)...
+Encoder Readings: R: 666, L: 703, 
+
+Calculating Slope and Intercept...
+Measuring CCW...
+duty: 0.000000, right: 0.000000, left: 0.000000
+duty: -0.050000, right: -0.020138, left: -0.006713
+duty: -0.100000, right: -0.577301, left: -0.520242
+duty: -0.150000, right: -1.466748, left: -1.402976
+duty: -0.200000, right: -2.372977, left: -2.332700
+duty: -0.250000, right: -3.312769, left: -3.423531
+duty: -0.300000, right: -4.188790, left: -4.638548
+duty: -0.350000, right: -4.990971, left: -5.548133
+duty: -0.400000, right: -5.920694, left: -6.548341
+duty: -0.450000, right: -6.934328, left: -7.437788
+duty: -0.500000, right: -7.739864, left: -8.572252
+duty: -0.550000, right: -8.451422, left: -9.559034
+duty: -0.600000, right: -9.448273, left: -10.475332
+duty: -0.650000, right: -10.166543, left: -11.572876
+duty: -0.700000, right: -10.968723, left: -12.566371
+duty: -0.750000, right: -11.861526, left: -13.623638
+duty: -0.800000, right: -12.636855, left: -14.674191
+duty: -0.850000, right: -13.519589, left: -15.640836
+duty: -0.900000, right: -14.331839, left: -16.637688
+duty: -0.950000, right: -15.070248, left: -17.624470
+duty: -1.000000, right: -15.916060, left: -18.550837
+
+
+Measuring CW...
+duty: 0.000000, right: 0.000000, left: 0.000000
+duty: 0.050000, right: 0.013426, left: 0.013426
+duty: 0.100000, right: 0.436332, left: 0.516886
+duty: 0.150000, right: 1.302284, left: 1.389551
+duty: 0.200000, right: 2.215226, left: 2.305849
+duty: 0.250000, right: 3.309413, left: 3.295987
+duty: 0.300000, right: 4.366680, left: 4.306264
+duty: 0.350000, right: 5.333323, left: 5.101732
+duty: 0.400000, right: 6.310037, left: 6.162355
+duty: 0.450000, right: 7.276680, left: 7.199483
+duty: 0.500000, right: 8.370868, left: 8.041941
+duty: 0.550000, right: 9.354294, left: 8.887753
+duty: 0.600000, right: 10.324294, left: 9.931595
+duty: 0.650000, right: 11.428551, left: 10.713636
+duty: 0.700000, right: 12.334779, left: 11.623222
+duty: 0.750000, right: 13.402115, left: 12.489174
+duty: 0.800000, right: 14.328483, left: 13.324918
+duty: 0.850000, right: 15.379036, left: 14.160663
+duty: 0.900000, right: 16.338968, left: 15.019901
+duty: 0.950000, right: 17.446581, left: 15.808656
+duty: 1.000000, right: 18.403154, left: 16.728310
+Right Motor Calibration: 
+m_rp: 0.051155
+b_rp: 0.067192
+m_rn: 0.059627
+b_rn: -0.045999
+Left Motor Calibration: 
+m_lp: 0.056297
+b_lp: 0.052248
+m_ln: 0.050683
+b_ln: -0.062301
+
+Parameters stored in FRAM (140 bytes): 
+Motor Polarity: -1 -1
+Encoder Polarity: 1 1
+Positive Slope: 0.056297 0.051155
+Positive Intercept: 0.052248 0.067192
+Negative Slope: 0.050683 0.059627
+Negative Intercept: -0.062301 -0.045999
+
+PID Gains (kp, ki, kd, tf):
+  Wheel L : 0.100000 0.000000 0.010000 0.100000
+  Wheel R : 0.100000 0.000000 0.010000 0.100000
+
+Control Mode: 2 (FF + PID)
+
+Done!

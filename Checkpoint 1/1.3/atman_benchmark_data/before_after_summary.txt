@@ -1,0 +1,5 @@
+Yaw RMS error (deg), before -> after firmware fixes (timing + radius calibration)
+  Slow ±15/30/45° steps      /odom       1.06 ->  0.96  (1.1x lower)
+  Slow ±15/30/45° steps      /gyrodom    1.25 ->  1.48  (0.8x lower)
+  3-turn spins (≈1 rad/s)    /odom      38.39 ->  2.19  (17.6x lower)
+  3-turn spins (≈1 rad/s)    /gyrodom   60.20 ->  4.58  (13.1x lower)
